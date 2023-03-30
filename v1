@@ -1,0 +1,105 @@
+import pygame
+from pygame.locals import K_ESCAPE, KEYDOWN, QUIT, MOUSEBUTTONDOWN
+
+pygame.init()
+
+WIDTH = 640
+HEIGHT = 480
+SIZE = (WIDTH, HEIGHT)
+
+screen = pygame.display.set_mode(SIZE)
+clock = pygame.time.Clock()
+
+# ---------------------------
+# Initialize global variables
+
+cloud_x = 479
+cloud_y = 53
+
+cloud_x2 = 53
+cloud_y2 = 240
+
+sky_r = 135
+sky_g = 206
+sky_b = 235
+
+sunx = 549
+suny = 75
+# ---------------------------
+
+running = True
+while running:
+    # EVENT HANDLING
+    for event in pygame.event.get():
+        if event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
+                running = False
+        elif event.type == QUIT:
+            running = False
+        elif event.type == MOUSEBUTTONDOWN:
+            print(event.pos)
+
+    # GAME STATE UPDATES
+    # All game math and comparisons happen here
+
+    # DRAWING
+    screen.fill((sky_r, sky_g, sky_b))  # always the first drawing command
+
+    #sun
+    pygame.draw.circle(screen, (237, 215, 102), (sunx, suny), 40)
+    
+    sky_r -= 1
+    sky_g -= 1
+    sky_b -= 1
+
+    sunx += 1
+    suny += 1
+
+        
+    # ground
+    pygame.draw.rect(screen, (170, 230, 147), (0, 400, 700, 100))
+
+  
+    #cloud
+    pygame.draw.circle(screen, (255, 255, 255), (cloud_x, cloud_y), 40)
+    pygame.draw.circle(screen, (255, 255, 255), (cloud_x + 56, cloud_y + 20),
+                       40)
+    pygame.draw.circle(screen, (255, 255, 255), (cloud_x - 2, cloud_y + 44),
+                       40)
+    pygame.draw.circle(screen, (255, 255, 255), (cloud_x + 96, cloud_y + 14),
+                       40)
+    pygame.draw.circle(screen, (255, 255, 255), (cloud_x - 44, cloud_y + 18),
+                       40)
+
+    #lower cloud
+    pygame.draw.circle(screen, (255, 255, 255), (cloud_x2, cloud_y2), 35)
+    pygame.draw.circle(screen, (255, 255, 255), (cloud_x2 + 38, cloud_y2 + 20),
+                       50)
+    pygame.draw.circle(screen, (255, 255, 255), (cloud_x2 + 32, cloud_y2 + 22),
+                       35)
+    pygame.draw.circle(screen, (255, 255, 255), (cloud_x2 + 102, cloud_y2), 40)
+    pygame.draw.circle(screen, (255, 255, 255),
+                       (cloud_x2 + 120, cloud_y2 - 24), 40)
+    pygame.draw.circle(screen, (255, 255, 255), (cloud_x2 + 50, cloud_y2 - 36),
+                       37)
+
+    #house
+    pygame.draw.rect(screen, (255, 233, 186), (100, 261, 210, 140))
+    pygame.draw.rect(screen, (107, 76, 62), (183, 329, 50, 72))
+    pygame.draw.rect(screen, (156, 202, 240), (115, 285, 34, 34))
+    pygame.draw.rect(screen, (156, 202, 240), (255, 285, 34, 34))
+
+    pygame.draw.polygon(screen, (156, 92, 75), ((101,261),(205,153),(311,263)))
+
+    #animating clouds
+    cloud_x2 += 1
+    cloud_x -= 1
+    if cloud_x == -110:
+        cloud_x = 479
+    if cloud_x2 == 655:
+        cloud_x2 = 53
+
+    # Must be the last two lines
+    # of the game loop
+    pygame.display.flip()
+    clock.tick(30)
